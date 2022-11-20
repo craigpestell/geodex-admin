@@ -1,20 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { Component } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import AddBusiness from "./components/AddBusiness";
-import Business from "./components/Business";
-import BusinessesList from "./components/BusinessesList";
+import AddBusiness from "./components/add-business.component";
+import Business from "./components/business.component";
+import BusinessesList from "./components/businesses-list.component";
 
-function App() {
-  return (
-    <Router>
+class App extends Component {
+  render() {
+    return (
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a href="/businesses" className="navbar-brand">
-            Repn
-          </a>
+          <Link to={"/businesses"} className="navbar-brand">
+            bezKoder
+          </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/businesses"} className="nav-link">
@@ -30,15 +30,16 @@ function App() {
         </nav>
 
         <div className="container mt-3">
-          <Switch>
-            <Route exact path={["/", "/businesses"]} component={BusinessesList} />
-            <Route exact path="/add" component={AddBusiness} />
-            <Route path="/businesses/:id" component={Business} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<BusinessesList/>} />
+            <Route path="/businesses" element={<BusinessesList/>} />
+            <Route path="/add" element={<AddBusiness/>} />
+            <Route path="/businesses/:id" element={<Business/>} />
+          </Routes>
         </div>
       </div>
-    </Router>
-  );
+    );
+  }
 }
 
 export default App;
