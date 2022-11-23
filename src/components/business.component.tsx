@@ -1,8 +1,44 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import BusinessDataService from "../services/business.service";
 import { withRouter } from '../common/with-router';
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
-class Business extends Component {
+import {LocationMap} from './business-location-map.component';
+
+/*const render = (status: Status): ReactElement => {
+  if (status === Status.FAILURE){
+    return <h3>{status} ...</h3>;
+  }else {
+    return <h3>{status} ..</h3>;
+  } 
+  //return null;
+};
+
+function Business (){
+  const center = { lat: -34.397, lng: 150.644 };
+  const zoom = 4;
+
+  return (
+    <Wrapper apiKey="AIzaSyCgpJyff1IszQa2T2QSXztIt1c7r0aW0Vw" render={render}>
+      <LocationMap center={center} zoom={zoom} />
+    </Wrapper>
+  );
+}*/
+
+interface IState {
+  center?: {lat: number, lng: number},
+  zoom: number,
+  status: any,
+  currentBusiness: {
+    id: string|null,
+    title:string,
+    description: string,
+    published: boolean,
+  },
+  message: string
+}
+
+class Business extends Component<any, IState> {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -13,6 +49,9 @@ class Business extends Component {
     this.deleteBusiness = this.deleteBusiness.bind(this);
 
     this.state = {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 4,
+      status: Status.LOADING,
       currentBusiness: {
         id: null,
         title: "",
@@ -65,7 +104,7 @@ class Business extends Component {
   }
 
   updatePublished(status) {
-    var data = {
+    const data = {
       id: this.state.currentBusiness.id,
       title: this.state.currentBusiness.title,
       description: this.state.currentBusiness.description,
@@ -115,8 +154,12 @@ class Business extends Component {
   }
 
   render() {
-    const { currentBusiness } = this.state;
-
+    const { currentBusiness, center, zoom, status }:any = this.state;
+    const StatusEl = () => {
+      if (status === Status.LOADING) return <h3>{status} ..</h3>;
+      if (status === Status.FAILURE) return <h3>{status} ...</h3>;
+      return null;  
+    }
     return (
       <div>
         {currentBusiness ? (
@@ -183,6 +226,11 @@ class Business extends Component {
               Update
             </button>
             <p>{this.state.message}</p>
+            <StatusEl></StatusEl>
+            <Wrapper apiKey="AIzaSyCgpJyff1IszQa2T2QSXztIt1c7r0aW0Vw">
+              <LocationMap center={center} zoom={zoom} />
+            </Wrapper>
+
           </div>
         ) : (
           <div>

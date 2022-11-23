@@ -1,3 +1,6 @@
+#map{
+  min-height: 600px;
+}
 .list {
   text-align: left;
   max-width: 750px;
