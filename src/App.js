@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "./App.scss";
 
 import AddBusiness from "./components/add-business.component";
-import Business from "./components/business.component";
+import {Business} from "./components/business.component";
 import BusinessesList from "./components/businesses-list.component";
 
 class App extends Component {
