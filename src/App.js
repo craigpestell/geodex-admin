@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 
 import AddBusiness from "./components/add-business.component";
-import {Business} from "./components/business.component";
+import Business from "./components/business.component";
 import BusinessesList from "./components/businesses-list.component";
 
 class App extends Component {

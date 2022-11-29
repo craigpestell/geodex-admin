@@ -8,9 +8,11 @@ const render = (status: Status): ReactElement | null => {
 };
 
 export function LocationMap({
+  address,
   center,
   zoom,
 }: {
+  address: string,
   center: google.maps.LatLngLiteral;
   zoom: number;
 }) {
@@ -18,10 +20,37 @@ export function LocationMap({
 
   useEffect(() => {
     if (ref.current) {
-      new window.google.maps.Map(ref.current, {
+      const map = new window.google.maps.Map(ref.current, {
         center,
         zoom,
       });
+      if(!address){
+        return;
+      }
+      const geocoder = new google.maps.Geocoder();
+
+      geocoder
+        .geocode({ address })
+        .then((response) => {
+          console.log(response);
+          const {address_components} = response.results[0];
+          const {formatted_address} = response.results[0];
+          address = formatted_address;
+          const zoom = 12;
+          map.setZoom(zoom);
+          const position = response.results[0].geometry.location;
+    
+          map.setCenter(position);
+          new google.maps.Marker({
+            map,
+            position,
+          });
+        })
+        .catch((e) =>
+          console.error(e)
+          //window.alert("Geocode was not successful for the following reason: " + e)
+        );
+    
     }
   });
 
